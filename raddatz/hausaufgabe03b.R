@@ -1,6 +1,6 @@
 # Hausaufgabe 03
-# Phillip Alday <phillip.alday@staff.uni-marburg.de>
-# 2014-04-23
+# Jörg Raddatz <raddatz@students.uni-marburg.de>
+# 2014-05-02
 # Dieses Werk ist lizenziert unter einer CC-BY-NC-SA Lizenz.
 
 # Sie sollten die Datei auch in Ihren Ordner kopieren und einen Commit machen, 
@@ -38,7 +38,7 @@ print(mean(my.data))
 # vorläufig auskommentiert, damit der Output beim ersten Beispiel sehr
 # überschaubar war.)
 
-# print(my.data[3])
+print(my.data[3])
 
 # Wenn wir eine Variable mit einer Zahl haben,
 # zahl <- 42
@@ -74,55 +74,63 @@ print(my.data**3)
 
 # aber nicht für den Modalwert!
 # Es gibt aber andere Funktionen, die uns da helfen.
-# more.data <- c("m","m","w","w","m","w","w","w","w","w","w","m","m","m","w","w","w")
+more.data <- c("m","m","w","w","m","w","w","w","w","w","w","m","m","m","w","w","w")
 
 # with table()
-# print(table(more.data))
+print(table(more.data))
 
 # with xtabs()
 # die komische Syntax mit Tilde wird später deutlicher ....
-# print(xtabs(~more.data))
+print(xtabs(~more.data))
 
 # auch die Ergebnisse solcher Funktionen können wir einer Variabel zuweisen:
-# tabelle <- xtabs(~more.data)
-# print(tabelle)
+tabelle <- xtabs(~more.data)
+print(tabelle)
 
 # Wir können die Werte auch aus dieser Tabelle bearbeiten
-# total <- sum(tabelle)
-# print(total)
+total <- sum(tabelle)
+print(total)
 
 # und damit relative Häufigkeiten ausdrucken:
-# tabelle.rel <- tabelle / total
-# print(tabelle.rel)
+tabelle.rel <- tabelle / total
+print(tabelle.rel)
 
 # Vervollständigen Sie folgende Zeile, sodass Prozentwerte aus den relativen
-# Häufigkeiten entst ehen: tabelle.prozent <- tabelle.rel code_hier 
-# print(tabelle.prozent)
+# Häufigkeiten entst ehen: 
+tabelle.prozent <- tabelle.rel*100
+print(tabelle.prozent)
 
 # Aber die Frage bleibt, wie berechnen wir den Modus? Durch sortieren!
-# tabelle.sorted <- sort(tabelle,decreasing=TRUE)
-# print(tabelle.sorted)
+
+tabelle.sorted <- sort(tabelle,decreasing=TRUE)
 
 # Sie sehen hier, dass manche Funktionen weitere Optionen haben, die wir
 # bestimmen können. Hier wollten wir, dass die Liste mit dem größten Wert
 # anfängt, daher setzen wir decreasing=TRUE
-
+ 
 # Nehmen Sie das erste Element aus dem obigen Ergebnis, um den Modalwert zu
 # bekommen:
-# modus <- code_hier
+modus <- (sort(more.data,decreasing=TRUE)[1])
 
 # Verständisfrage: gibt es immer nur *einen* Modalwert? 
 # Wenn nicht, ist der Code oben korrekt? Warum?
 # Schreiben Sie Ihre Antwort als Comment hier.
 
-# antwort_hier
+# Es gibt auch Daten mit bi- oder multimodalen Verteilungen, die dann entsprechend
+# viele Modalwerte haben. In diesem Fall liefert der Code nur den ersten von diesen,
+# man könnte aber z.B. prüfen ob tabelle.sorted[2]==tabelle.sorted[1] ist, dann ist
+# der tabelle.sorted[2] zugrundeliegende Wert ein weiterer modus von more.data.
+# Allgemeiner kann man in einer Schleife von 2 bis Länge(tabelle) die Gleichheit von 
+# tabelle.sorted[Laufvariable] mit tabelle.sorted[1] prüfen; sobald ein geringerer Wert
+# auftritt als bei tabelle.sorted[1], sind alle davorliegenden Indizes (und nur diese)
+# von more.data Modi derselben.
 
 # Als Abscheid ein Beispiel mit der Darstellung Frequenzdaten mit Säulendiagramm
 # bzw. Histogramm
 
-# library(ggplot2)
-# my.histogram <- qplot(more.data,geom="histogram")
-# print(my.histogram)
+library(ggplot2)
+my.histogram <- qplot(more.data,geom="histogram")
+print(my.histogram)
 
 # Sie sind jetzt fertig -- das waren ganz viele Kleinigkeiten, aber
 # Kleinigkeiten, die wir immer wieder nutzen werden. Machen Sie einen Commit und
