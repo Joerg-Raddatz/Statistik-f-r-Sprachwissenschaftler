@@ -1,6 +1,6 @@
 # Hausaufgabe 15
-# Phillip Alday <phillip.alday@staff.uni-marburg.de>
-# 2014-06-04
+# Jörg Raddatz <raddatz@students.uni-marburg.de>
+# 2014-06-09
 # Dieses Werk ist lizenziert unter einer CC-BY-NC-SA Lizenz.
 
 
@@ -43,40 +43,52 @@ body <- read.table("Data/body_dim_long.tab",header=TRUE)
 # Wir werden auch den Datensatz women nutzen, der schon mit R geliefert wird.
 # Mehr Information zum Datensatz bekommen Sie mit ?women. Die Angaben sind in
 # US-Einheiten, weshalb wir eine Kopie mit den SI-Einheiten machen.
-#women.metric <- women
-#women.metric$height.cm <- women.metric$height * 2.54 # 2.54 cm pro inch
-#women.metric$weight.kg <- women.metric$weight / 2.2 # 2.2 lb pro kg
+women.metric <- women
+women.metric$height.cm <- women.metric$height * 2.54 # 2.54 cm pro inch
+women.metric$weight.kg <- women.metric$weight / 2.2 # 2.2 lb pro kg
 
 # Plotten wir erst mal die Daten in US-Einheiten. Die Bestimmung des
 # method-Parameters ist sehr wichtig: bei so wenigen Datenpunkten ist der
 # Default bei ggplot2 LOESS und wir wollen normale lineare Regression.
-#ggplot(women.metric,aes(x=height,y=weight)) +  geom_point() + geom_smooth(method="lm")
+ggplot(women,aes(x=height,y=weight)) +  geom_point() + geom_smooth(method="lm")
 
 # Ist der Fit gut? Schauen wir uns die Regression an:
-#m <- lm(weight ~ height, data=women.metric)
-#print(summary(m))
+m <- lm(weight ~ height, data=women)
+print(summary(m))
 
 # Aber Pfund (lb) und Zoll (inch) sind komische Einheiten. Wie sieht es aus mit
 # kg und cm?
-#ggplot(women.metric,aes(x=height.cm,y=weight.kg)) +  geom_point() + geom_smooth(method="lm")
-#m2 <- lm(weight.kg ~ height.cm, data=women.metric)
-#print(summary(m2))
+ggplot(women.metric,aes(x=height.cm,y=weight.kg)) +  geom_point() + geom_smooth(method="lm")
+m2 <- lm(weight.kg ~ height.cm, data=women.metric)
+print(summary(m2))
 
 # Sehen die Plots anders aus? Hat sich der R^2 Wert geändert? Die t-Werte? Die Koeffizienten? 
+## Alles gleich, außer Estimate & Std-Error (wg. anderer absoluter Zahlen)
 
 # Was passiert, wenn wir das Modell umdrehen? Also, height.cm als eine Funktion
 # von weight.kg darstellen? Plotten und berechnen Sie das neue Modell, wie ich
 # es oben für die zwei bisherigen Modelle gemacht habe.
 
-# CODE_HIER
+ggplot(women,aes(x=weight,y=height)) +  geom_point() + geom_smooth(method="lm")
+ggplot(women.metric,aes(x=weight.kg,y=height.cm)) +  geom_point() + geom_smooth(method="lm")
+mRev <- lm(height ~ weight, data=women)
+m2Rev <- lm(height.cm ~ weight.kg, data=women.metric)
+print(summary(m))
+print(summary(m2))
 
 # Hat sich der R^2 Wert geändert? Die t-Werte? Die Koeffizienten? Was ist die
 # Beziehung zwischen diesem Modell und m2?
+## Verhält sich alles ganauso bzw. analog. Weder die Umrechnung (Multiplikation mit festem
+## Faktor) noch die Umkehrung (die ja einem festen Faktor von ^-1 entspricht) macht einen
+## Unterschied, außer für die absoluten Werte bei Estimate & Std-Error.
+
 
 # Wie sieht es aus mit den Daten zum Kursteilnehmern? Plotten Sie und berechnen
 # Sie ein Modell für das Gewicht der Teilnehmer als Funktion von Körpergröße.
 
-# CODE_HIER
+ggplot(women,aes(x=height,y=weight)) +  geom_point() + geom_smooth(method="lm")
+body.female=subset(body,sex=="f")
+
 
 # Warum funktioniert die Regression besser beim Datensatz "women" als bei den
 # Kursteilnehmerdaten? HINT: Lesen Sie die Hilfe-Beschreibung von women! 
