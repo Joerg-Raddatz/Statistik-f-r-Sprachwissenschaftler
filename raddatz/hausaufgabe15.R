@@ -73,8 +73,8 @@ ggplot(women,aes(x=weight,y=height)) +  geom_point() + geom_smooth(method="lm")
 ggplot(women.metric,aes(x=weight.kg,y=height.cm)) +  geom_point() + geom_smooth(method="lm")
 mRev <- lm(height ~ weight, data=women)
 m2Rev <- lm(height.cm ~ weight.kg, data=women.metric)
-print(summary(m))
-print(summary(m2))
+print(summary(mRev))
+print(summary(m2Rev))
 
 # Hat sich der R^2 Wert geändert? Die t-Werte? Die Koeffizienten? Was ist die
 # Beziehung zwischen diesem Modell und m2?
@@ -86,9 +86,19 @@ print(summary(m2))
 # Wie sieht es aus mit den Daten zum Kursteilnehmern? Plotten Sie und berechnen
 # Sie ein Modell für das Gewicht der Teilnehmer als Funktion von Körpergröße.
 
-ggplot(women,aes(x=height,y=weight)) +  geom_point() + geom_smooth(method="lm")
-body.female=subset(body,sex=="f")
+
+bodyFemale=subset(body,sex=="f")
+mKurs = lm(height ~ weight, data=body)
+mKursFrauen = lm(height ~ weight, data=bodyFemale)
+
+ggplot(body,aes(x=height,y=weight)) +  geom_point() + geom_smooth(method="lm")
+ggplot(bodyFemale,aes(x=height,y=weight)) +  geom_point() + geom_smooth(method="lm")
 
 
 # Warum funktioniert die Regression besser beim Datensatz "women" als bei den
 # Kursteilnehmerdaten? HINT: Lesen Sie die Hilfe-Beschreibung von women! 
+## Bei den Kursteilnehmern sind auch Männer; aber hauptsächlich sind die Daten von women
+## bereits Durchschnittswerte je Messpunkt (also pro height- bzw. weight-Einheit), wogegen
+## die der Kursteilnehmer pro Einheit nur 1 Beobachtung darstellen bzw. die jeweilige 
+## Person nicht dem Durchschnitt der Bevölkerung für eine Person des jeweiligen Gewichts
+## oder der Größe entsprechen muss.
