@@ -99,6 +99,7 @@ ggplot(diamonds,aes(x=depth,y=carat,color=price)) + geom_point(alpha=0.1)+facet_
 ## Wert wird bei den geringeren Schnittqualitäten stärker abgewichen als bei den höheren.
 ## Der Preis wird durch die Schnittqualität mitbeeinflusst, aber nur leicht.
 
+=======
 
 # Noch eine Überlegung
 Haben Sie dabei explorativ oder konfirmativ gearbeitet? Was hat das für eine Auswirkung auf die Interpretation der Ergebnisse?
