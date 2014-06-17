@@ -1,6 +1,11 @@
 % Hausaufgabe 16
+<<<<<<< HEAD
 % Jörg Raddatz <raddatz@students.uni-marburg.de>
 % 2014-06-17
+=======
+% Phillip Alday <phillip.alday@staff.uni-marburg.de>
+% 2014-06-11
+>>>>>>> 001bb2be665abf9366c8893247f0be9ac5dd9411
 
 Falls die Umlaute in dieser und anderen Dateien nicht korrekt dargestellt werden, sollten Sie File > Reopen with Encoding > UTF-8 sofort machen (und auf jeden Fall ohne davor zu speichern), damit die Enkodierung korrekt erkannt wird! 
 
@@ -58,6 +63,7 @@ ggplot(diamonds,aes(x=carat,y=price,color=color)) + geom_point(alpha=0.3)
 ggplot(diamonds,aes(x=carat,y=price,color=color)) + geom_point() + facet_wrap(~color)
 ```
 
+<<<<<<< HEAD
 ## Für Erkenntnisse dazu, was den Preis eines Diamanten bestimmt, untersuche ich zunächst
 ## die Beziehung zum Schnitt (cut). Hier ist eine evt. Kausalität von der Richtung her
 ## eindeutig - aber ist der Preis tatsächlich abhängig vom Cut?
@@ -100,6 +106,8 @@ ggplot(diamonds,aes(x=depth,y=carat,color=price)) + geom_point(alpha=0.1)+facet_
 ## Der Preis wird durch die Schnittqualität mitbeeinflusst, aber nur leicht.
 
 
+=======
+>>>>>>> 001bb2be665abf9366c8893247f0be9ac5dd9411
 # Noch eine Überlegung
 Haben Sie dabei explorativ oder konfirmativ gearbeitet? Was hat das für eine Auswirkung auf die Interpretation der Ergebnisse?
 
