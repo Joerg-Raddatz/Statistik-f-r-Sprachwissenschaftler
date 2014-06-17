@@ -1,6 +1,6 @@
 % Hausaufgabe 16
 % Jörg Raddatz <raddatz@students.uni-marburg.de>
-% 2014-06-15
+% 2014-06-17
 
 Falls die Umlaute in dieser und anderen Dateien nicht korrekt dargestellt werden, sollten Sie File > Reopen with Encoding > UTF-8 sofort machen (und auf jeden Fall ohne davor zu speichern), damit die Enkodierung korrekt erkannt wird! 
 
@@ -57,6 +57,48 @@ ggplot(diamonds,aes(x=carat,y=price,color=color)) + geom_point()
 ggplot(diamonds,aes(x=carat,y=price,color=color)) + geom_point(alpha=0.3)
 ggplot(diamonds,aes(x=carat,y=price,color=color)) + geom_point() + facet_wrap(~color)
 ```
+
+## Für Erkenntnisse dazu, was den Preis eines Diamanten bestimmt, untersuche ich zunächst
+## die Beziehung zum Schnitt (cut). Hier ist eine evt. Kausalität von der Richtung her
+## eindeutig - aber ist der Preis tatsächlich abhängig vom Cut?
+
+ggplot(diamonds,aes(x=carat,y=price,color=table)) + geom_point(alpha=0.25) + facet_grid(~clarity)
+
+## Nein, der Preis erscheint relativ gleichmäßig verteilt, unabhängig vom Schnitt, auch
+## über die verschiedenen Stufen von Clarity. Ist er, anhand der Daten,von dieser abhängig?
+
+ggplot(diamonds,aes(x=carat,y=price,color=color)) + geom_point() + facet_wrap(~clarity)
+#
+# Ja, deutlich - bei Stufe I1 gibt es auch schwere Steine (Karat > 3) noch im Bereich bis
+## $20.000, die folgenden Stufen haben immer steilere Kurven. Jeweils darin sind die
+## Farbqualitäten wie zu erwarten, aber bei Clarity I1 keine ausgeprägte Ordnung (evt.
+## bei geringerer Clarity nicht so deutlich zu sehen u/o in diesem "Billigsegment" nicht
+## systematisch für den Preis entscheidend; ein gewisser Zusammenhang ist auf über die
+## folgenden Clarity-Stufen, insb. die niedrigeren zu sehen)
+## Die Clarity wird ihrerseits beeinflusst, neben mutmaßlich der Materialqualität des
+## Steines als solcher, über die Dimensionen, d.h. die Tiefe. Größere Steine haben mehr
+## Gewicht, das den Preis hauptsächlich bestimmt, allerdings ist die Beziehung von Tiefe
+## und Gewicht nicht so klar, wie man meinen könnte - wohl weil versucht wird, die Steine
+## möglichst optimal für Brillanz etc. zu schleifen. 
+
+ggplot(diamonds,aes(x=depth,y=carat,color=price)) + geom_point(alpha=0.1)+facet_grid(~clarity)+scale_colour_gradient(low="blue",high="red")
+
+## Die meisten haben eine Tiefe von ca. 60 mm, graduell weniger und mehr. Der maximal
+## vorkommende Karat-Wert steht eher in Beziehung zur Qualität der Clarity: Steine bis zu 5
+## Karat kommen in I1 vor, bei steigender Klarheit nur noch (von Ausreißern abgesehen) bis
+## zu 2,5 und schließlich 1,75 Karat, bzw. zu große Steine können nicht genauso klar sein.
+## Der Preis ist hauptsächlich vom Gewicht (Karat) abhängig, wobei je nach Clarity in den
+## oberen Gewichtsklassen (aber nicht in den unteren) ein stärkerer Preisanstieg zu
+## verzeichnen ist. Tiefe, d.h. Dimensionen unabhängig vom Gewicht, scheint für sich
+## genommen für den Preis keine Rolle zu spielen, d.h. nur über das Gewicht.
+
+ggplot(diamonds,aes(x=depth,y=carat,color=price)) + geom_point(alpha=0.1)+facet_grid(~cut
+)+scale_colour_gradient(low="blue",high="red")
+
+## Ideale Schnittqualität scheint mit einer Tiefe von ca. 64 mm einherzugehen; von diesem
+## Wert wird bei den geringeren Schnittqualitäten stärker abgewichen als bei den höheren.
+## Der Preis wird durch die Schnittqualität mitbeeinflusst, aber nur leicht.
+
 
 # Noch eine Überlegung
 Haben Sie dabei explorativ oder konfirmativ gearbeitet? Was hat das für eine Auswirkung auf die Interpretation der Ergebnisse?
