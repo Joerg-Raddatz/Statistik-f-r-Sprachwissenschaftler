@@ -58,33 +58,71 @@ ggplot(diamonds,aes(x=carat,y=price,color=color)) + geom_point(alpha=0.3)
 ggplot(diamonds,aes(x=carat,y=price,color=color)) + geom_point() + facet_wrap(~color)
 ```
 
+=======
+
+## Eine mögliche Fragestellung ist das Vorhandensein und die Größe des Einflusses von Eigenschaften der 
+## Diamanten auf dessen Preis. Neben einer möglichen Linearen Regression sind dabei die Voraussetzungen für
+## eine einfaktorielle ANOVA gegeben.
 ## Für Erkenntnisse dazu, was den Preis eines Diamanten bestimmt, untersuche ich zunächst
 ## die Beziehung zum Schnitt (cut). Hier ist eine evt. Kausalität von der Richtung her
 ## eindeutig - aber ist der Preis tatsächlich abhängig vom Cut?
 
-ggplot(diamonds,aes(x=carat,y=price,color=table)) + geom_point(alpha=0.25) + facet_grid(~clarity)
+ggplot(diamonds,aes(x=carat,y=price,color=cut)) + geom_point(alpha=0.25) + facet_grid(~clarity) + geom_smooth(method="lm")
 
-## Nein, der Preis erscheint relativ gleichmäßig verteilt, unabhängig vom Schnitt, auch
-## über die verschiedenen Stufen von Clarity. Ist er, anhand der Daten,von dieser abhängig?
+diamonds$cutNum <- as.numeric(diamonds$cut)
+summary(lm(price~cutNum, data=diamonds))
+summary(aov(price~cut, data=diamonds))
+
+## In jedem Fall zeigt sich der starke Zusammenhang zwischen Gewicht und Preis (zur Verdeutlichung auch Regressionsgeraden
+## geplottet.) Dieser wird unten noch analysiert.
+## Ein hoher Preis scheint mit den höheren Qualitätsstufen des Schnitts einherzugehen, relativ gleichförmig
+## über die verschiedenen Stufen von Clarity. Die ANOVA und lineare Regression bestätigen dies (hochsignifikante
+## p-Werte). Besteht eine ähnliche Beziehung zur Clarity?
 
 ggplot(diamonds,aes(x=carat,y=price,color=color)) + geom_point() + facet_wrap(~clarity)
-#
-# Ja, deutlich - bei Stufe I1 gibt es auch schwere Steine (Karat > 3) noch im Bereich bis
+
+diamonds$clarityNum <- as.numeric(diamonds$clarity)
+summary( lm(price~clarityNum, data=diamonds) )
+summary( aov(price~clarity, data=diamonds) )
+
+##
+## Ja, deutlich - bei Stufe I1 gibt es auch schwere Steine (Karat > 3) noch im Bereich bis
 ## $20.000, die folgenden Stufen haben immer steilere Kurven. Jeweils darin sind die
 ## Farbqualitäten wie zu erwarten, aber bei Clarity I1 keine ausgeprägte Ordnung (evt.
 ## bei geringerer Clarity nicht so deutlich zu sehen u/o in diesem "Billigsegment" nicht
 ## systematisch für den Preis entscheidend; ein gewisser Zusammenhang ist auf über die
-## folgenden Clarity-Stufen, insb. die niedrigeren zu sehen)
+## folgenden Clarity-Stufen, insb. die niedrigeren zu sehen). Die Regression und ANOVA bestätigen den
+## Zusammenhang als hochsignifikant.
+##
 ## Die Clarity wird ihrerseits beeinflusst, neben mutmaßlich der Materialqualität des
 ## Steines als solcher, über die Dimensionen, d.h. die Tiefe. Größere Steine haben mehr
-## Gewicht, das den Preis hauptsächlich bestimmt, allerdings ist die Beziehung von Tiefe
-## und Gewicht nicht so klar, wie man meinen könnte - wohl weil versucht wird, die Steine
-## möglichst optimal für Brillanz etc. zu schleifen. 
+## Gewicht, das anhand der Graphen den Preis hauptsächlich zu bestimmen scheint, allerdings ist die Beziehung
+## anhand des Graphen nicht so klar, wie man meinen könnte, was mit der Optimierung des Schnitts für eine
+## optimale Optik zu tun haben kann. Der Einfluss von Tiefe auf Gewicht und (somit) auf den Preis ist 
+## sehr regelmäßig aber sehr klein (R^2 sehr klein).
+## Zwischen Preis und Gewicht dagegen ist R^2 sehr groß, bei ~0,85. Das Gewicht erklärt also einen großen
+## Teil des Preises.
 
 ggplot(diamonds,aes(x=depth,y=carat,color=price)) + geom_point(alpha=0.1)+facet_grid(~clarity)+scale_colour_gradient(low="blue",high="red")
 
-## Die meisten haben eine Tiefe von ca. 60 mm, graduell weniger und mehr. Der maximal
-## vorkommende Karat-Wert steht eher in Beziehung zur Qualität der Clarity: Steine bis zu 5
+RegTiefeGewicht <- lm(carat~depth, data=diamonds)
+summary(RegTiefeGewicht)
+ANOVATiefeGewicht <- aov(carat~depth, data=diamonds)
+summary(ANOVATiefeGewicht)
+
+RegPreisTiefe <- lm(price~depth, data=diamonds)
+summary(RegPreisTiefe)
+ANOVAPreisTiefe <- aov(price~depth, data=diamonds)
+summary(ANOVAPreisTiefe)
+
+RegPreisGewicht <- lm(price~carat, data=diamonds)
+summary(RegPreisGewicht)
+ANOVAPreisGewicht <- aov(price~carat, data=diamonds)
+summary(ANOVAPreisGewicht)
+
+
+## Die meisten Steine in der Stichprobe haben eine Tiefe von ca. 60 mm, graduell weniger und mehr. 
+## Der maximal vorkommende Karat-Wert steht eher in Beziehung zur Qualität der Clarity: Steine bis zu 5
 ## Karat kommen in I1 vor, bei steigender Klarheit nur noch (von Ausreißern abgesehen) bis
 ## zu 2,5 und schließlich 1,75 Karat, bzw. zu große Steine können nicht genauso klar sein.
 ## Der Preis ist hauptsächlich vom Gewicht (Karat) abhängig, wobei je nach Clarity in den
@@ -99,7 +137,17 @@ ggplot(diamonds,aes(x=depth,y=carat,color=price)) + geom_point(alpha=0.1)+facet_
 ## Wert wird bei den geringeren Schnittqualitäten stärker abgewichen als bei den höheren.
 ## Der Preis wird durch die Schnittqualität mitbeeinflusst, aber nur leicht.
 
+## Man kann auch die obigen sowie die zusätzlichen Variablen (etwa die Dimensionen der Diamanten) 
+## gleichzeitig für die Varianzanalyse betrachten, für den Fall, dass sich der kombinierte Einfluss 
+## unterscheidet von den Einzeleinflüssen (z.B. weil sich Faktoren gegenseitig aufheben oder verstärken),d.h.
+## eine mehrfaktorielle ANOVA:
+MehrfakANOVA <- aov(price ~ carat+cut+color+clarity+x+y+z+table+depth, data=diamonds)
+summary( MehrfakANOVA )
+
+## Mit Ausnahme der y-Dimension sind alle Variablen dabei hochsignifikant für den Preis.
+
 =======
+
 
 # Noch eine Überlegung
 Haben Sie dabei explorativ oder konfirmativ gearbeitet? Was hat das für eine Auswirkung auf die Interpretation der Ergebnisse?
