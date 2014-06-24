@@ -1,6 +1,6 @@
 # Hausaufgabe 18
-# Jörg Raddatz <raddatz@students.uni-marburg.de>
-# 2014-06-24
+# Phillip Alday <phillip.alday@staff.uni-marburg.de>
+# 2014-06-17
 # Dieses Werk ist lizenziert unter einer CC-BY-NC-SA Lizenz.
 
 
