@@ -179,7 +179,7 @@ Was ist der Unterschied zwischen den Konfidenzintervallen von `confint()` und vo
 
 # Intercepts und Slopes
 
-Ich habe am Anfang meiner Erklärung für gemischte Modelle erwähnt, dass wir sie eigentlich als Regression mit Korrektur für die verschiedenen Gruppierungen (Subjects, Items, usw.) betrachten können. Das können wir eigentlich auch direkt am Model sehen, indem wir den Befehl `coef()` nutzen.
+Ich habe am Anfang meiner Erklärung für gemischte Modelle erwähnt, dass wir sie eigentlich als Regression mit Korrektur für die verschiedenen Gruppierungen (Subjects, Items, usw.) betrachten können.  Das können wir eigentlich auch direkt am Model sehen, indem wir den Befehl `coef()` nutzen.
 
 Wir schauen uns zuerst ein Intercept-Only-Modell an: 
 ```{r}
@@ -200,5 +200,5 @@ bibliography()
 ```
 
 # Lizenz
-Dieses Werk ist lizenziert unter einer CC-BY-NC-SA Lizenz.
+Dieses Werk ist lizenziert unter einer CC-BY-NC-SA Lizenz..
 
